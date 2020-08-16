@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript">
+        // global variables
+        var gl = null;
+        
+        function setupWebGL() {
+            var canvas = document.getElementById("OUTPUT-CANVAS");
+            gl = canvas.getContext("webgl");
+        }
+
+        function setupWhatToDraw() {
+            // the triangle is now represented with a single array of six numbers,
+            // where each number pair represents the two-dimensional coordinates of a vetex.
+            var positions = [
+                0.0, 0.0,   // 1st vertex
+                1.0, 0.0,   // 2nd vertex
+                0.0, 1.0    // 3rd vertex
+            ];
+
+            // WebGL specifications lead the way to the definition of new Javascript object
+            // for representing contiguous and strongly-typed arrays.
+            var typedPositions = new Float32Array(positions);
+
+            // a Javascript typed array containing vertex attributes is mirrored(by creating
+            // an internal WebGL copy) by a WebGLBuffer object
+
+            // an uninitialzed, zero-sized WebGLBuffer is created and a reference to it is stored
+            // in the positionsBuffer variable
+            var positionsBuffer = gl.createBuffer();
+
+            // to tell WebGL to bind positionsBuffer to the ARRAY_BUFFER target
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionsBuffer);
+
+            // to send the data contained in the typed array typedPosiitons 
+            // to the object that is bound on the target ARRAY_BUFFER, that is,
+            // the WebGLBuffer positionsBuffer.
+            gl.bufferData(gl.ARRAY_BUFFER, typedPositions, gl.STATIC_DRAW);
+
+        }
+        function helloDraw() {
+            setupWebGL();
+        }
+        window.onload = helloDraw;
+    </script>
+</head>
+<body>
+    <canvas id="OUTPUT-CANVAS" width="500px" height="500px" style="border: 1px solid black;"></canvas>
+</body>
+</html>
